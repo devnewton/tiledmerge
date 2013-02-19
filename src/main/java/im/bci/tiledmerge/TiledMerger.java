@@ -59,12 +59,10 @@ public class TiledMerger {
     private List<MergeableTile> tiles = new ArrayList<MergeableTile>();
 
     void addTmx(File file) {
-        System.out.println("Merge " + file);
+        System.out.println("Merge '" + file + "'");
         try {
             TMXMapReader reader = new TMXMapReader();
-            FileInputStream is = new FileInputStream(file);
-            try {
-                tiled.core.Map map = reader.readMap(is);
+                tiled.core.Map map = reader.readMap(file.getCanonicalPath());
                 maps.put(file, map);
 
                 for (TileSet tileset : map.getTileSets()) {
@@ -73,9 +71,6 @@ public class TiledMerger {
                         mergeOrAddToTile(mergeable);
                     }
                 }
-            } finally {
-                is.close();
-            }
         } catch (Exception ex) {
             Logger.getLogger(TiledMerger.class.getName()).log(Level.SEVERE, null, ex);
         }
